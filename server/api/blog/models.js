@@ -71,7 +71,6 @@ const Blogs = {
         }
 
         if (missingValues.length) {
-            console.log('Missing values', missingValues);
             return res.json({message: `Request body is missing the following key(s): ${missingValues}`});
         }
         const newBlogPost = {
@@ -82,7 +81,7 @@ const Blogs = {
             },
             content: req.body.content
         }
-        return Blog
+                Blog
                 .create(newBlogPost)
                 .then(blog => {
                     res.json(blog);
@@ -93,8 +92,28 @@ const Blogs = {
                 });
       },
       editBlogById(req, res) {
+        if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+            res.status(400).json({message: `request path id, ${req.params.id} and request body id, ${req.body.id} do not match`});
+        }
 
-      }
+        const updateableFields = ['title', 'author', 'content'];
+        const toUpdate = {};
+        updateableFields.forEach(field => {
+            if (field in req.body) {
+                toUpdate[field] = req.body[field];
+            }
+        });
+        Blog
+          .findByIdAndUpdate(req.params.id, { $set: toUpdate })
+          .then(blog => res.status(200).end())
+          .catch(err => res.status(500).json({ message: 'Internal server error' }));
+    },
+    deletePost(req, res) {
+        Blog
+          .findByIdAndRemove(req.params.id)
+          .then(blog => res.status(204).end())
+          .catch(err => res.status(500).json({ message: 'Internal server error' }));
+    }
 }
 
 

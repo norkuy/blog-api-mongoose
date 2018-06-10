@@ -14,6 +14,9 @@ const blogCtrl = {
     },
     editBlogById(req, res) {
         Blogs.editBlogById(req, res);
+    },
+    deletePost(req, res) {
+        Blogs.deletePost(req, res);
     }
 }
 
