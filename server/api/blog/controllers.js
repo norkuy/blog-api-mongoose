@@ -4,9 +4,16 @@ const mongoose = require('mongoose');
 
 const blogCtrl = {
     getBlogs(req, res) {
-        Blogs.getBlogs(req, res).then(blogs => {
-            res.json(blogs);
-        });
+        Blogs.getBlogs(req, res);
+    },
+    getBlogById(req, res) {
+        Blogs.getBlogById(req, res);
+    },
+    createBlogPost(req, res) {
+        Blogs.createBlogPost(req, res);
+    },
+    editBlogById(req, res) {
+        Blogs.editBlogById(req, res);
     }
 }
 
